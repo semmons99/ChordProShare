@@ -1,8 +1,6 @@
 require "bcrypt"
 
 class User < ActiveRecord::Base
-  include BCrypt
-
   attr_accessor :password, :password_confirmation
 
   validates :email, presence: true
@@ -16,12 +14,12 @@ class User < ActiveRecord::Base
   before_save :digest
 
   def valid_password?(password)
-    Password.new(self.password_digest) == password
+    BCrypt::Password.new(self.password_digest) == password
   end
 
   private
 
   def digest
-    self.password_digest = Password.create(password)
+    self.password_digest = BCrypt::Password.create(password)
   end
 end
