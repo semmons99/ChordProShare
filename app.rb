@@ -12,11 +12,19 @@ class ChordProShare < Sinatra::Base
 
   helpers do
     def authorized?
-      !session[:user].nil?
+      !current_user.nil?
     end
 
-    def user
-      session[:user]
+    def logout
+      session[:user] = nil
+    end
+
+    def current_user
+      User.find_by_id(session[:user])
+    end
+
+    def current_user=(user)
+      session[:user] = user.id
     end
   end
 
@@ -33,7 +41,7 @@ class ChordProShare < Sinatra::Base
     user = User.find_by_email(params[:email])
 
     if !user.nil? && user.valid_password?(params[:password])
-      session[:user] = user
+      self.current_user = user
       redirect to("/")
     else
       @errors = ActiveModel::Errors.new(Object.new)
@@ -43,7 +51,7 @@ class ChordProShare < Sinatra::Base
   end
 
   get "/logout" do
-    session[:user] = nil
+    logout
     redirect to("/")
   end
 
@@ -59,7 +67,7 @@ class ChordProShare < Sinatra::Base
     )
 
     if user.save
-      session[:user] = user
+      self.current_user = user
       redirect to("/")
     else
       @errors = user.errors
