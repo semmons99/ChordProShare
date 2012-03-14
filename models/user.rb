@@ -1,14 +1,27 @@
+require "bcrypt"
+
 class User < ActiveRecord::Base
-  def self.from_omniauth(auth)
-    find_by_provider_and_uid(auth["provider"], auth["uid"]) ||
-      create_with_omniauth(auth)
+  include BCrypt
+
+  attr_accessor :password, :password_confirmation
+
+  validates :email, presence: true
+  validates :email, uniqueness: true
+  validates :email, format: {with: /^.+@.+$/, message: "is invalid"}
+  validates :password, presence: true
+  validates :password, confirmation: true
+  validates :password, length: {minimum: 6}
+  validates :password_confirmation, presence: true
+
+  before_save :digest
+
+  def valid_password?(password)
+    Password.new(self.password_digest) == password
   end
 
-  def self.create_with_omniauth(auth)
-    create! do |user|
-      user.provider = auth["provider"]
-      user.uid      = auth["uid"]
-      user.name     = auth["info"]["name"]
-    end
+  private
+
+  def digest
+    self.password_digest = Password.create(password)
   end
 end

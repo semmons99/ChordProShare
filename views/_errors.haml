@@ -1,0 +1,4 @@
+- if @errors
+  .errors
+    - @errors.full_messages.each do |message|
+      .error= message
