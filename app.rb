@@ -28,8 +28,13 @@ class ChordProShare < Sinatra::Base
     end
   end
 
+  before do
+    unless request.path_info =~ /^\/(login|logout|register)$/
+      redirect to("/login") unless authorized?
+    end
+  end
+
   get "/" do
-    redirect to("/login") unless authorized?
     haml :index
   end
 
