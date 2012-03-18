@@ -1,5 +1,7 @@
 require "sinatra"
 require "active_record"
+require "rest_client"
+
 require "logger"
 
 require_relative "models/user"
@@ -40,6 +42,16 @@ class ChordProShare < Sinatra::Base
 
   get "/new" do
     haml :new
+  end
+
+  post "/preview" do
+    chordpro = params[:chordpro]
+    preview = RestClient.post(
+      "http://tenbyten.com/cgi-bin/webchord.pl",
+      chordpro: chordpro
+    )
+    
+    preview
   end
 
   get "/login" do

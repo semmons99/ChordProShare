@@ -1,2 +1,9 @@
-%label(for="chordpro-document") Enter your ChordPro markup here.
-%textarea#chordpro-document(rows="30" cols="80")
+%p
+  ChordPro preview provided by
+  %a(href="http://webchord.sourceforge.net/") WebChord
+
+%form(action="/preview" method="post")
+  %label(for="chordpro-document") Enter your ChordPro markup here.
+  %textarea#chordpro(name="chordpro" rows="30" cols="80")
+
+  %input(type="submit" value="Preview")

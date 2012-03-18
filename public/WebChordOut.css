@@ -1,0 +1,48 @@
+H1 {
+font-family: "Arial", Helvetica;
+font-size: 14pt;
+}
+H2 {
+font-family: "Arial", Helvetica;
+font-size: 12pt;
+}
+P {
+	font-family: "Arial", Helvetica;
+	font-size: 10pt;
+}
+.lyrics, .lyrics_chorus {
+	font-size: 10pt;
+	color: blue;
+	font-style: normal;
+}
+.lyrics_tab, .lyrics_chorus_tab {
+	font-family: "Courier New", Courier;
+	font-size 8pt;  font-size: 8pt;
+	font-style: normal;
+}
+.lyrics_chorus, .lyrics_chorus_tab, .chords_chorus, .chords_chorus_tab {
+	color: Navy;
+	background-color: #ffffdd;
+	font-style: normal;
+}
+.chords, .chords_chorus, .chords_tab, .chords_chorus_tab {
+	font-size: 8pt;
+	color: red;
+	padding-right: 4pt;
+	font-style: normal;
+}
+
+.comment, .comment_italic, .comment_box {
+	background-color: #dddddd;
+	font-style: italic;
+}
+.comment_italic {
+	font-size 10pt; 
+	font-style: italic;
+	color: "#444444";
+	font-size: 10pt;
+}
+.comment_box {
+	border: solid;
+	font-style: normal;
+}
