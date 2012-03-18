@@ -38,6 +38,10 @@ class ChordProShare < Sinatra::Base
     haml :index
   end
 
+  get "/new" do
+    haml :new
+  end
+
   get "/login" do
     haml :login
   end
