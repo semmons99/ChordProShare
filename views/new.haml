@@ -1,15 +1,15 @@
-%p
-  ChordPro preview provided by
-  %a(href="http://webchord.sourceforge.net/") WebChord
-
 %form(action="/new" method="post")
   %p
-    %label(for="chordpro") ChordPro Markup
-    %textarea#chordpro(name="chordpro" rows="30" cols="80")
+    %input#docname(name="docname" type="text" placeholder="ChordPro Name")
   %p
-    %label(for="docname") ChordPro Name
-    %input#docname(name="docname" type="text")
+    %textarea#chordpro(name="chordpro" rows="30" cols="80" placeholder="ChordPro Markup")
 
   %p
     %input(type="submit" name="action" value="Preview")
     %input(type="submit" name="action" value="Save to Local")
+    %a(href="/") Cancel
+
+#footer
+  %p
+    ChordPro preview provided by
+    %a(href="http://webchord.sourceforge.net/") WebChord
