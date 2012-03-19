@@ -48,12 +48,13 @@ class ChordProShare < Sinatra::Base
   post "/new" do
     action   = params[:action]
     chordpro = params[:chordpro]
+    docname  = params[:docname]
 
     case action
     when "Preview"
       render_chordpro_preview(chordpro)
     when "Save to Local"
-      send_chordpro_file(chordpro)
+      send_chordpro_file(chordpro, docname)
     else
       not_found
     end
@@ -110,11 +111,12 @@ class ChordProShare < Sinatra::Base
     )
   end
 
-  def send_chordpro_file(chordpro)
+  def send_chordpro_file(chordpro, docname)
     file = Tempfile.new("chordpro")
     file.write(chordpro)
     file.close
 
-    send_file file.path, filename: "chordpro.txt"
+    docname ||= "chordpro"
+    send_file file.path, filename: "#{docname}.txt"
   end
 end
