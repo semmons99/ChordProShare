@@ -6,5 +6,5 @@ documents into printable Chord Sheets.
 ---
 
 This application was created as part of
-[Mendicant Universities](http://mendicantuniversity.org) March 2012 community
+[Mendicant University's](http://mendicantuniversity.org) March 2012 community
 Web Dev course.
