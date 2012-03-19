@@ -1,23 +1,15 @@
-%form(action="" method="post")
+%form#new-form(action="" method="post")
   %p
     %input#docname(name="docname" type="text" placeholder="ChordPro Name")
   %p
     %textarea#chordpro(name="chordpro" rows="30" cols="80" placeholder="ChordPro Markup")
 
   %p
-    %button(data-url="/preview") Preview
-    %button(data-url="/download") Save to Local
+    %button.new-form-button(data-url="/preview") Preview
+    %button.new-form-button(data-url="/download") Save to Local
     %a(href="/") Cancel
 
 #footer
   %p
     ChordPro preview provided by
     %a(href="http://webchord.sourceforge.net/") WebChord
-
-:coffeescript
-  $ ->
-    $("button").click ->
-      url  = $(this).data("url")
-
-      $("form").attr("action", url)
-      $("form").submit()
