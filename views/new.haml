@@ -5,11 +5,19 @@
     %textarea#chordpro(name="chordpro" rows="30" cols="80" placeholder="ChordPro Markup")
 
   %p
-    %input(type="submit" name="action" value="Preview")
-    %input(type="submit" name="action" value="Save to Local")
+    %button(data-url="/preview") Preview
+    %button(data-url="/download") Save to Local
     %a(href="/") Cancel
 
 #footer
   %p
     ChordPro preview provided by
     %a(href="http://webchord.sourceforge.net/") WebChord
+
+:coffeescript
+  $ ->
+    $("button").click ->
+      url  = $(this).data("url")
+
+      $("form").attr("action", url)
+      $("form").submit()

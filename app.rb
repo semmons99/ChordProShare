@@ -1,6 +1,7 @@
 require "sinatra"
 require "active_record"
 require "rest_client"
+require "coffee-filter"
 
 require "logger"
 require "tempfile"
@@ -45,19 +46,17 @@ class ChordProShare < Sinatra::Base
     haml :new
   end
 
-  post "/new" do
-    action   = params[:action]
+  post "/preview" do
+    chordpro = params[:chordpro]
+
+    render_chordpro_preview(chordpro)
+  end
+
+  post "/download" do
     chordpro = params[:chordpro]
     docname  = params[:docname]
 
-    case action
-    when "Preview"
-      render_chordpro_preview(chordpro)
-    when "Save to Local"
-      send_chordpro_file(chordpro, docname)
-    else
-      not_found
-    end
+    send_chordpro_file(chordpro, docname)
   end
 
   get "/login" do
