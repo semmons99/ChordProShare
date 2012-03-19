@@ -1,7 +1,6 @@
 require "sinatra"
 require "active_record"
 require "rest_client"
-require "coffee-filter"
 
 require "logger"
 require "tempfile"
