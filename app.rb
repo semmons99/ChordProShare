@@ -3,6 +3,7 @@ require "active_record"
 require "rest_client"
 
 require "logger"
+require "tempfile"
 
 require_relative "models/user"
 ActiveRecord::Base.logger = Logger.new(STDOUT)
@@ -51,6 +52,8 @@ class ChordProShare < Sinatra::Base
     case action
     when "Preview"
       render_chordpro_preview(chordpro)
+    when "Save to Local"
+      send_chordpro_file(chordpro)
     else
       not_found
     end
@@ -105,5 +108,13 @@ class ChordProShare < Sinatra::Base
       "http://tenbyten.com/cgi-bin/webchord.pl",
       chordpro: chordpro
     )
+  end
+
+  def send_chordpro_file(chordpro)
+    file = Tempfile.new("chordpro")
+    file.write(chordpro)
+    file.close
+
+    send_file file.path, filename: "chordpro.txt"
   end
 end
