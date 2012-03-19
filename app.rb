@@ -44,14 +44,16 @@ class ChordProShare < Sinatra::Base
     haml :new
   end
 
-  post "/preview" do
+  post "/new" do
+    action   = params[:action]
     chordpro = params[:chordpro]
-    preview = RestClient.post(
-      "http://tenbyten.com/cgi-bin/webchord.pl",
-      chordpro: chordpro
-    )
-    
-    preview
+
+    case action
+    when "Preview"
+      render_chordpro_preview(chordpro)
+    else
+      not_found
+    end
   end
 
   get "/login" do
@@ -94,5 +96,14 @@ class ChordProShare < Sinatra::Base
       @errors = user.errors
       haml :register
     end
+  end
+
+  private
+
+  def render_chordpro_preview(chordpro)
+    RestClient.post(
+      "http://tenbyten.com/cgi-bin/webchord.pl",
+      chordpro: chordpro
+    )
   end
 end
