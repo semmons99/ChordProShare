@@ -2,11 +2,12 @@
   %p
     %input#docname(name="docname" type="text" placeholder="ChordPro Name")
   %p
-    %textarea#chordpro(name="chordpro" rows="30" cols="80" placeholder="ChordPro Markup")
+    %textarea#markup(name="markup" rows="30" cols="80" placeholder="ChordPro Markup")
 
   %p
     %button.new-form-button(data-url="/preview") Preview
-    %button.new-form-button(data-url="/download") Save to Local
+    %button.new-form-button(data-url="/download") Download ChordPro
+    %button.new-form-button(data-url="/render") Download PDF
     %a(href="/") Cancel
 
 #footer

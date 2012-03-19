@@ -46,16 +46,23 @@ class ChordProShare < Sinatra::Base
   end
 
   post "/preview" do
-    chordpro = params[:chordpro]
+    markup = params[:markup]
 
-    render_chordpro_preview(chordpro)
+    render_chordpro_preview(markup)
   end
 
   post "/download" do
-    chordpro = params[:chordpro]
-    docname  = params[:docname]
+    markup  = params[:markup]
+    docname = params[:docname]
 
-    send_chordpro_file(chordpro, docname)
+    send_chordpro_file(markup, docname)
+  end
+
+  post "/render" do
+    markup  = params[:markup]
+    docname = params[:docname]
+
+    send_chordpro_pdf(markup, docname)
   end
 
   get "/login" do
@@ -102,19 +109,42 @@ class ChordProShare < Sinatra::Base
 
   private
 
-  def render_chordpro_preview(chordpro)
+  def render_chordpro_preview(markup)
     RestClient.post(
       "http://tenbyten.com/cgi-bin/webchord.pl",
-      chordpro: chordpro
+      chordpro: markup
     )
   end
 
-  def send_chordpro_file(chordpro, docname)
-    file = Tempfile.new("chordpro")
-    file.write(chordpro)
-    file.close
+  def send_chordpro_file(markup, docname)
+    chordpro = create_temp_chordpro(markup)
 
-    docname ||= "chordpro"
-    send_file file.path, filename: "#{docname}.txt"
+    docname = "chordpro" if docname.nil? || docname.strip == ""
+    send_file chordpro.path, filename: "#{docname}.txt", type: "text/plain"
+  end
+
+  def send_chordpro_pdf(markup, docname)
+    chordpro = create_temp_chordpro(markup)
+    pdf      = create_temp_pdf(chordpro)
+
+    docname = "chordpro" if docname.nil? || docname.strip == ""
+    send_file pdf.path, filename: "#{docname}.pdf", type: "application/pdf"
+  end
+
+  def create_temp_chordpro(markup)
+    chordpro = Tempfile.new("chordpro")
+    chordpro.write(markup)
+    chordpro.close
+    chordpro
+  end
+
+  def create_temp_pdf(chordpro)
+    ps  = Tempfile.new("ps")
+    pdf = Tempfile.new("pdf")
+
+    system("chordii -o #{ps.path} #{chordpro.path}")
+    system("ps2pdf #{ps.path} #{pdf.path}")
+
+    pdf
   end
 end
