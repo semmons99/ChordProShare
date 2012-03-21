@@ -91,6 +91,27 @@ class ChordProShare < Sinatra::Base
     haml :edit, locals: {doc: doc}
   end
 
+  post "/rename" do
+    oldname = params[:oldname]
+    newname = params[:newname]
+
+    doc = current_user.docs.find_by_name(oldname)
+
+    if doc.nil?
+      @errors = ActiveModel::Errors.new(Object.new)
+      @errors[:base] << "Could not find requested Document"
+      haml :edit
+    end
+
+    if doc.update_attributes(name: newname)
+      haml :edit, locals: {doc: doc}
+    else
+      @errors = doc.errors
+      doc.name = oldname
+      haml :edit, locals: {doc: doc}
+    end
+  end
+
   get "/login" do
     haml :login
   end

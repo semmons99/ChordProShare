@@ -1,5 +1,12 @@
 = haml :_errors, layout: false
 
+#rename-div(style="display:none")
+  %form#rename-form(action="/rename" method="post")
+    %input#oldname(name="oldname" type="hidden" value="#{doc.name}")
+    %p
+      %input#newname(name="newname" type="text" placeholder="New ChordPro Name")
+      %input(type="submit" value="Update")
+
 %form#new-form(action="" method="post")
   %p
     - if doc.name.blank?
@@ -7,6 +14,8 @@
     - else
       %input#docname(name="docname" type="text" value="#{doc.name}" disabled="true")
       %input#docname(name="docname" type="hidden" value="#{doc.name}")
+      %a#rename-show(href="#") Rename
+      %a#rename-hide(href="#" style="display:none") Cancel
   %p
     %textarea#markup(name="markup" rows="30" cols="80" placeholder="ChordPro Markup")= doc.markup
 
