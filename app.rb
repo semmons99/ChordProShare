@@ -6,6 +6,7 @@ require "logger"
 require "tempfile"
 
 require_relative "models/user"
+require_relative "models/doc"
 ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 class ChordProShare < Sinatra::Base
@@ -41,8 +42,8 @@ class ChordProShare < Sinatra::Base
     haml :index
   end
 
-  get "/new" do
-    haml :new
+  get "/edit" do
+    haml :edit, locals: {doc: Doc.new}
   end
 
   post "/preview" do
@@ -63,6 +64,18 @@ class ChordProShare < Sinatra::Base
     docname = params[:docname]
 
     send_chordpro_pdf(markup, docname)
+  end
+
+  post "/save" do
+    docname = params[:docname]
+    markup  = params[:markup]
+
+    doc = current_user.docs.find_or_create_by_name(docname)
+    doc.markup = markup
+
+    @errors = doc.errors unless doc.save
+
+    haml :edit, locals: {doc: doc}
   end
 
   get "/login" do

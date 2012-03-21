@@ -1,6 +1,8 @@
 require "bcrypt"
 
 class User < ActiveRecord::Base
+  has_many :docs
+
   attr_accessor :password, :password_confirmation
 
   validates :email, presence: true
