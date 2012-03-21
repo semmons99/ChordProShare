@@ -3,3 +3,8 @@
 
 %h1 Actions
 %a(href="/edit") New ChordPro document
+
+%h1 Your Docs
+%ul
+- docs.each do |doc|
+  %li= doc.name

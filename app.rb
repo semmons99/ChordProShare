@@ -39,7 +39,7 @@ class ChordProShare < Sinatra::Base
   end
 
   get "/" do
-    haml :index
+    haml :index, locals: {docs: current_user.docs}
   end
 
   get "/edit" do
