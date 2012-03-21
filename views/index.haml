@@ -1,3 +1,5 @@
+= haml :_errors, layout: false
+
 = current_user.email
 %a(href="/logout") Log out
 
@@ -7,4 +9,5 @@
 %h1 Your Docs
 %ul
 - docs.each do |doc|
-  %li= doc.name
+  %li
+    %a(href="/edit/#{doc.name}")= doc.name

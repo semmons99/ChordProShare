@@ -42,6 +42,19 @@ class ChordProShare < Sinatra::Base
     haml :index, locals: {docs: current_user.docs}
   end
 
+  get "/edit/:docname" do
+    docname = params[:docname]
+    doc     = current_user.docs.find_by_name(docname)
+
+    if doc.nil?
+      @errors = ActiveModel::Errors.new(Object.new)
+      @errors[:base] << "Could not find requested Document"
+      haml :index, locals: {docs: current_user.docs}
+    else
+      haml :edit, locals: {doc: doc}
+    end
+  end
+
   get "/edit" do
     haml :edit, locals: {doc: Doc.new}
   end
