@@ -30,12 +30,29 @@ class ChordProShare < Sinatra::Base
     def current_user=(user)
       session[:user] = user.id
     end
+
+    def errors
+      session[:errors] ||= []
+    end
+
+    def flush_errors
+      session[:errors] = []
+    end
+
+    def register_errors(messages)
+      messages = *messages
+
+      session[:errors] ||= []
+      session[:errors] += messages
+    end
   end
 
   before do
     unless request.path_info =~ /^\/(login|logout|register)$/
       redirect to("/login") unless authorized?
     end
+
+    flush_errors
   end
 
   get "/" do
@@ -47,8 +64,7 @@ class ChordProShare < Sinatra::Base
     doc     = current_user.docs.find_by_name(docname)
 
     if doc.nil?
-      @errors = ActiveModel::Errors.new(Object.new)
-      @errors[:base] << "Could not find requested Document"
+      register_errors("Could not find requested Document")
       haml :index, locals: {docs: current_user.docs}
     else
       haml :edit, locals: {doc: doc}
@@ -86,7 +102,7 @@ class ChordProShare < Sinatra::Base
     doc = current_user.docs.find_or_create_by_name(docname)
     doc.markup = markup
 
-    @errors = doc.errors unless doc.save
+    register_errors(doc.errors.full_messages) unless doc.save
 
     haml :edit, locals: {doc: doc}
   end
@@ -98,15 +114,14 @@ class ChordProShare < Sinatra::Base
     doc = current_user.docs.find_by_name(oldname)
 
     if doc.nil?
-      @errors = ActiveModel::Errors.new(Object.new)
-      @errors[:base] << "Could not find requested Document"
+      register_errors("Could not find requested Document")
       haml :edit
     end
 
     if doc.update_attributes(name: newname)
       haml :edit, locals: {doc: doc}
     else
-      @errors = doc.errors
+      register_errors(doc.errors.full_messages)
       doc.name = oldname
       haml :edit, locals: {doc: doc}
     end
@@ -123,8 +138,7 @@ class ChordProShare < Sinatra::Base
       self.current_user = user
       redirect to("/")
     else
-      @errors = ActiveModel::Errors.new(Object.new)
-      @errors[:base] << "Invalid Email/Password"
+      register_errors("Invalid Email/Password")
       haml :login
     end
   end
@@ -149,7 +163,7 @@ class ChordProShare < Sinatra::Base
       self.current_user = user
       redirect to("/")
     else
-      @errors = user.errors
+      register_errors(user.errors)
       haml :register
     end
   end
