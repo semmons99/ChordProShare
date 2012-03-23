@@ -9,4 +9,5 @@ gem "rest-client",       "~> 1.6.7", require: "rest_client"
 
 group :development do
   gem "rake", "~> 0.9.2"
+  gem "pry",  "~> 0.9.8"
 end
