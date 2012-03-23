@@ -1,4 +1,5 @@
 require "sinatra"
+require "haml"
 require "active_record"
 require "rest_client"
 
