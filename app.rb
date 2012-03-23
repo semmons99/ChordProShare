@@ -4,7 +4,6 @@ require "active_record"
 
 require "logger"
 
-require_relative "lib/chord_pro_file"
 Dir.glob("models/*"){|model| require_relative model}
 
 ActiveRecord::Base.logger = Logger.new(STDOUT)
