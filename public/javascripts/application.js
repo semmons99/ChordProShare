@@ -17,4 +17,10 @@ jQuery(function(){
     $("#rename-show").show();
     $("#rename-hide").hide();
   });
+
+  $("[data-confirm]").click(function(){
+    if (!confirm($(this).data("confirm"))) {
+      return false;
+    }
+  });
 });
