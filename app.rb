@@ -1,13 +1,12 @@
 require "sinatra"
 require "haml"
 require "active_record"
-require "rest_client"
 
 require "logger"
-require "tempfile"
 
-require_relative "models/user"
-require_relative "models/doc"
+require_relative "lib/chord_pro_file"
+Dir.glob("models/*"){|model| require_relative model}
+
 ActiveRecord::Base.logger = Logger.new(STDOUT)
 
 class ChordProShare < Sinatra::Base
@@ -53,6 +52,10 @@ class ChordProShare < Sinatra::Base
       redirect to("/login") unless authorized?
     end
 
+    if request.path_info =~ /^\/(preview|download|render)$/
+      @chordpro = ChordPro.new(params[:markup], params[:docname])
+    end 
+
     flush_errors
   end
 
@@ -77,23 +80,19 @@ class ChordProShare < Sinatra::Base
   end
 
   post "/preview" do
-    markup = params[:markup]
-
-    render_chordpro_preview(markup)
+    @chordpro.render
   end
 
   post "/download" do
-    markup  = params[:markup]
-    docname = params[:docname]
+    txt = ChordProTXT.new(@chordpro)
 
-    send_chordpro_file(markup, docname)
+    send_file(txt.path, filename: txt.name, type: "text/plain")
   end
 
   post "/render" do
-    markup  = params[:markup]
-    docname = params[:docname]
+    pdf = ChordProPDF.new(@chordpro)
 
-    send_chordpro_pdf(markup, docname)
+    send_file(pdf.path, filename: pdf.name, type: "application/pdf")
   end
 
   post "/save" do
@@ -167,46 +166,5 @@ class ChordProShare < Sinatra::Base
       register_errors(user.errors)
       haml :register
     end
-  end
-
-  private
-
-  def render_chordpro_preview(markup)
-    RestClient.post(
-      "http://tenbyten.com/cgi-bin/webchord.pl",
-      chordpro: markup
-    )
-  end
-
-  def send_chordpro_file(markup, docname)
-    chordpro = create_temp_chordpro(markup)
-
-    docname = "chordpro" if docname.nil? || docname.strip == ""
-    send_file chordpro.path, filename: "#{docname}.txt", type: "text/plain"
-  end
-
-  def send_chordpro_pdf(markup, docname)
-    chordpro = create_temp_chordpro(markup)
-    pdf      = create_temp_pdf(chordpro)
-
-    docname = "chordpro" if docname.nil? || docname.strip == ""
-    send_file pdf.path, filename: "#{docname}.pdf", type: "application/pdf"
-  end
-
-  def create_temp_chordpro(markup)
-    chordpro = Tempfile.new("chordpro")
-    chordpro.write(markup)
-    chordpro.close
-    chordpro
-  end
-
-  def create_temp_pdf(chordpro)
-    ps  = Tempfile.new("ps")
-    pdf = Tempfile.new("pdf")
-
-    system("chordii -o #{ps.path} #{chordpro.path}")
-    system("ps2pdf #{ps.path} #{pdf.path}")
-
-    pdf
   end
 end
