@@ -1,21 +1,19 @@
 jQuery(function(){
-  $(".new-form-button").click(function(){
+  $(".form-action").click(function(){
     var url = $(this).data("url");
 
     $("#new-form").attr("action", url);
     $("#new-form").submit();
   });
 
-  $("#rename-show").click(function(){
-    $("#rename-div").show();
-    $("#rename-show").hide();
-    $("#rename-hide").show();
+  $(".preview-toggle").click(function(){
+    $.post("/preview", $("#new-form").serialize(), function(data) {
+      $("#preview").html(data);
+    });
   });
 
-  $("#rename-hide").click(function(){
-    $("#rename-div").hide();
-    $("#rename-show").show();
-    $("#rename-hide").hide();
+  $(".compose-toggle").click(function(){
+    $("#preview").html("<img src='/images/rendering.gif' alt='rendering'/>");
   });
 
   $("[data-confirm]").click(function(){

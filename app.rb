@@ -1,5 +1,6 @@
 require "sinatra"
 require "haml"
+require "rdiscount"
 require "active_record"
 
 require "logger"

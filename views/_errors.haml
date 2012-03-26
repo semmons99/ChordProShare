@@ -1,3 +1,7 @@
-.errors
-  - errors.each do |message|
-    .error= message
+- unless errors.empty?
+  .container
+    .alert.alert-block.alert-error
+      %a.close(data-dismiss="alert") x
+      - errors.each do |message|
+        :markdown
+          __Error__ #{message}

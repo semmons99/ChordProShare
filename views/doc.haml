@@ -1,22 +1,41 @@
-#header
-  %a(href="/" data-confirm="Are you sure? Unsaved changes will be lost.") Back to Index
+#header.right
+  %p
+    %a.btn(href="/" data-confirm="Are you sure? Unsaved changes will be lost.") Back to Index
 
-%form#new-form(action="" method="post")
-  %input#id(name="id" type="hidden" value="#{doc.id}")
-  %p
-    %input#name(name="name" type="text" value="#{doc.name}" placeholder="ChordPro Name")
-  %p
-    %textarea#markup(name="markup" rows="30" cols="80" placeholder="ChordPro Markup")= doc.markup
+.tabbable
+  %ul.nav.nav-pills
+    %li.compose-toggle.active
+      %a(href="#compose" data-toggle="tab") Compose
+    %li
+      %a.preview-toggle(href="#preview" data-toggle="tab") Preview
 
-  %p
-    %button.new-form-button(data-url="/save") Save
-    %button.new-form-button(data-url="/preview") Preview
-    %button.new-form-button(data-url="/download") Download ChordPro
-    %button.new-form-button(data-url="/render") Download PDF
+  .tab-content
+    #compose.tab-pane.active
+      %form#new-form(action="" method="post")
+        %input#id(name="id" type="hidden" value="#{doc.id}")
+        %p
+          %input#name.span10(name="name" type="text" value="#{doc.name}" placeholder="ChordPro Name")
+        %p
+          %textarea#markup.span10(name="markup" rows="20" cols="80" placeholder="ChordPro Markup")= doc.markup
 
-#footer
-  %p
-    ChordPro preview provided by
-    %a(href="http://webchord.sourceforge.net/") WebChord
+        %p
+          .btn-group.right
+            %button.btn.form-action(data-url="/save") Save
+            %button.btn.dropdown-toggle(data-toggle="dropdown")
+              %span.caret
+            %ul.dropdown-menu
+              %li
+                %a.form-action(href="#" data-url="/download") Download ChordPro
+              %li
+                %a.form-action(href="#" data-url="/render") Download PDF
+    #preview.tab-pane.center
+      %img(src="/images/rendering.gif" alt="rendering")
+
+%hr
+
+#footer.center
   %p
     %a(href="http://www.vromans.org/johan/projects/Chordii/chordpro/index.html") ChordPro Syntax Guide
+    |
+    ChordPro preview provided by
+    %a(href="http://webchord.sourceforge.net/") WebChord

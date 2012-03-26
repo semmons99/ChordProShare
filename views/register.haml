@@ -1,14 +1,14 @@
-%form(action="/register" method="post")
-  .field
-    %label(for="email") Email
-    %input#email(type="email" name="email" placeholder="user@example.com")
-  .field
-    %label(for="password") Password
-    %input#password(type="password" name="password")
-  .field
-    %label(for="password_confirmation") Password Confirmation
-    %input#password_confirmation(type="password" name="password_confirmation")
-  .action
-    %input(type="submit" value="Register")
-    %a(href="/") Cancel
-
+.center
+  %form(action="/register" method="post")
+    %p
+      %label(for="email") Email
+      %input#email(type="email" name="email" placeholder="user@example.com")
+    %p
+      %label(for="password") Password
+      %input#password(type="password" name="password")
+    %p
+      %label(for="password_confirmation") Password Confirmation
+      %input#password_confirmation(type="password" name="password_confirmation")
+    %p
+      %input.btn.btn-primary(type="submit" value="Register")
+      %a.btn(href="/") Cancel

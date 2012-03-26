@@ -10,6 +10,6 @@ class Doc < ActiveRecord::Base
     RestClient.post(
       "http://tenbyten.com/cgi-bin/webchord.pl",
       chordpro: markup
-    )
+    ).gsub("WebChordOut.css", "/stylesheets/WebChordOut.css")
   end
 end

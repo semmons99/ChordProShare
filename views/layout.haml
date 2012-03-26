@@ -2,10 +2,26 @@
 %html(lang="en")
   %head
     %title ChordPro Share
+    %link(href="/stylesheets/bootstrap.min.css" rel="stylesheet")
+    %link(href="/stylesheets/application.css" rel="stylesheet")
   %body
+    - if authorized?
+      .container
+        .right
+          = current_user.email
+          %a(href="/logout") Log out
+
+    .container
+      .offset1.span10
+        .center
+          %img(src="/images/logo.png" alt="ChordPro Share")
+
     = haml :_errors, layout: false
 
-    = yield
+    .container
+      .offset1.span10
+        = yield
 
     %script(type="text/javascript" src="/javascripts/jquery-1.7.1.min.js")
+    %script(type="text/javascript" src="/javascripts/bootstrap.min.js")
     %script(type="text/javascript" src="/javascripts/application.js")

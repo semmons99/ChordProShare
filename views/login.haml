@@ -1,11 +1,11 @@
-%form(action="/login" method="post")
-  .field
-    %label(for="email") Email
-    %input#email(type="email" name="email" placeholder="user@example.com")
-  .field
-    %label(for="password") Password
-    %input#password(type="password" name="password")
-  .action
-    %input(type="submit" value="Log in")
-    %a(href="/register") Register
-
+.center
+  %form(action="/login" method="post")
+    .field
+      %label(for="email") Email
+      %input#email(type="email" name="email" placeholder="user@example.com")
+    .field
+      %label(for="password") Password
+      %input#password(type="password" name="password")
+    .action
+      %input.btn.btn-primary(type="submit" value="Log in")
+      %a.btn(href="/register") Register
