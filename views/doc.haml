@@ -1,5 +1,5 @@
 #header
-  %a(href="/") Back to Index
+  %a(href="/" data-confirm="Are you sure? Unsaved changes will be lost.") Back to Index
 
 %form#new-form(action="" method="post")
   %input#id(name="id" type="hidden" value="#{doc.id}")
@@ -13,7 +13,6 @@
     %button.new-form-button(data-url="/preview") Preview
     %button.new-form-button(data-url="/download") Download ChordPro
     %button.new-form-button(data-url="/render") Download PDF
-    %a(href="/" data-confirm="Are you sure you want to close this document? All unsaved changes will be lost.") Close
 
 #footer
   %p
