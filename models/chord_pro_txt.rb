@@ -1,8 +1,8 @@
 class ChordProTXT < ChordProFile
   extension "txt"
 
-  processor do |chordpro, txt|
-    txt.write(chordpro.markup)
+  processor do |doc, txt|
+    txt.write(doc.markup)
     txt.close
   end
 end

@@ -1,8 +1,8 @@
 class ChordProPS < ChordProFile
   extension "ps"
 
-  processor do |chordpro, ps|
-    txt = ChordProTXT.new(chordpro)
+  processor do |doc, ps|
+    txt = ChordProTXT.new(doc)
     system("chordii -o #{ps.path} #{txt.path}")
   end
 end

@@ -52,7 +52,10 @@ class ChordProShare < Sinatra::Base
     end
 
     if request.path_info =~ /^\/(preview|download|render)$/
-      @chordpro = ChordPro.new(params[:markup], params[:docname])
+      @doc = Doc.new(
+        markup: params[:markup],
+        name:   params[:name]
+      )
     end 
 
     flush_errors
@@ -79,17 +82,17 @@ class ChordProShare < Sinatra::Base
   end
 
   post "/preview" do
-    @chordpro.render
+    @doc.render
   end
 
   post "/download" do
-    txt = ChordProTXT.new(@chordpro)
+    txt = ChordProTXT.new(@doc)
 
     send_file(txt.path, filename: txt.name, type: "text/plain")
   end
 
   post "/render" do
-    pdf = ChordProPDF.new(@chordpro)
+    pdf = ChordProPDF.new(@doc)
 
     send_file(pdf.path, filename: pdf.name, type: "application/pdf")
   end

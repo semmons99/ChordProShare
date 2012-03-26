@@ -8,10 +8,10 @@
 %form#new-form(action="" method="post")
   %p
     - if doc.name.blank?
-      %input#docname(name="docname" type="text" placeholder="ChordPro Name")
+      %input#name(name="name" type="text" placeholder="ChordPro Name")
     - else
-      %input#docname(name="docname" type="text" value="#{doc.name}" disabled="true")
-      %input#docname(name="docname" type="hidden" value="#{doc.name}")
+      %input#name(name="name" type="text" value="#{doc.name}" disabled="true")
+      %input#name(name="name" type="hidden" value="#{doc.name}")
       %a#rename-show(href="#") Rename
       %a#rename-hide(href="#" style="display:none") Cancel
   %p

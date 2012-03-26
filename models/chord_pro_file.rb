@@ -12,9 +12,12 @@ class ChordProFile
 
   attr_reader :name
 
-  def initialize(chordpro)
-    @name = "#{chordpro.name}#{extension}"
-    @file = generate(chordpro)
+  def initialize(doc)
+    name = doc.name
+    name = "chordpro" if name.nil? || name.strip == ""
+
+    @name = "#{name}#{extension}"
+    @file = generate(doc)
   end
 
   def path
@@ -31,9 +34,9 @@ class ChordProFile
 
   private
 
-  def generate(chordpro)
+  def generate(doc)
     tmp = Tempfile.new(name)
-    processor.call(chordpro, tmp) unless processor.nil?
+    processor.call(doc, tmp) unless processor.nil?
     tmp
   end
 end
