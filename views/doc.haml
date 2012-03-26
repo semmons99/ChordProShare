@@ -1,19 +1,7 @@
-#rename-div(style="display:none")
-  %form#rename-form(action="/rename" method="post")
-    %input#oldname(name="oldname" type="hidden" value="#{doc.name}")
-    %p
-      %input#newname(name="newname" type="text" placeholder="New ChordPro Name")
-      %input(type="submit" value="Update")
-
 %form#new-form(action="" method="post")
+  %input#id(name="id" type="hidden" value="#{doc.id}")
   %p
-    - if doc.name.blank?
-      %input#name(name="name" type="text" placeholder="ChordPro Name")
-    - else
-      %input#name(name="name" type="text" value="#{doc.name}" disabled="true")
-      %input#name(name="name" type="hidden" value="#{doc.name}")
-      %a#rename-show(href="#") Rename
-      %a#rename-hide(href="#" style="display:none") Cancel
+    %input#name(name="name" type="text" value="#{doc.name}" placeholder="ChordPro Name")
   %p
     %textarea#markup(name="markup" rows="30" cols="80" placeholder="ChordPro Markup")= doc.markup
 

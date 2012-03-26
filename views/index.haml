@@ -2,10 +2,10 @@
 %a(href="/logout") Log out
 
 %h1 Actions
-%a(href="/edit") New ChordPro document
+%a(href="/doc/new") New ChordPro document
 
 %h1 Your Docs
 %ul
 - docs.each do |doc|
   %li
-    %a(href="/edit/#{doc.name}")= doc.name
+    %a(href="/doc/#{doc.id}")= doc.name

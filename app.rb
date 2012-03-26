@@ -52,10 +52,10 @@ class ChordProShare < Sinatra::Base
     end
 
     if request.path_info =~ /^\/(preview|download|render)$/
-      @doc = Doc.new(
-        markup: params[:markup],
-        name:   params[:name]
-      )
+      @doc = current_user.docs.find_by_id(params[:id]) || Doc.new(
+          markup: params[:markup],
+          name:   params[:name]
+        )
     end 
 
     flush_errors
@@ -65,20 +65,20 @@ class ChordProShare < Sinatra::Base
     haml :index, locals: {docs: current_user.docs}
   end
 
-  get "/edit/:docname" do
-    docname = params[:docname]
-    doc     = current_user.docs.find_by_name(docname)
+  get "/doc/new" do
+    haml :doc, locals: {doc: Doc.new}
+  end
+
+  get "/doc/:id" do
+    id  = params[:id]
+    doc = current_user.docs.find_by_id(id)
 
     if doc.nil?
       register_errors("Could not find requested Document")
       haml :index, locals: {docs: current_user.docs}
     else
-      haml :edit, locals: {doc: doc}
+      haml :doc, locals: {doc: doc}
     end
-  end
-
-  get "/edit" do
-    haml :edit, locals: {doc: Doc.new}
   end
 
   post "/preview" do
@@ -98,35 +98,17 @@ class ChordProShare < Sinatra::Base
   end
 
   post "/save" do
-    docname = params[:docname]
-    markup  = params[:markup]
+    id     = params[:id]
+    name   = params[:name]
+    markup = params[:markup]
 
-    doc = current_user.docs.find_or_create_by_name(docname)
+    doc = current_user.docs.find_by_id(id) || current_user.docs.new
+    doc.name   = name
     doc.markup = markup
 
     register_errors(doc.errors.full_messages) unless doc.save
 
-    haml :edit, locals: {doc: doc}
-  end
-
-  post "/rename" do
-    oldname = params[:oldname]
-    newname = params[:newname]
-
-    doc = current_user.docs.find_by_name(oldname)
-
-    if doc.nil?
-      register_errors("Could not find requested Document")
-      haml :edit
-    end
-
-    if doc.update_attributes(name: newname)
-      haml :edit, locals: {doc: doc}
-    else
-      register_errors(doc.errors.full_messages)
-      doc.name = oldname
-      haml :edit, locals: {doc: doc}
-    end
+    haml :doc, locals: {doc: doc}
   end
 
   get "/login" do
