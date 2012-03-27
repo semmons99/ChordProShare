@@ -10,6 +10,10 @@ h1 {
   text-align: center;
 }
 
-.right {
+.float-right {
   float: right;
+}
+
+.right {
+  text-align: right;
 }

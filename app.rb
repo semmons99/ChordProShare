@@ -70,6 +70,18 @@ class ChordProShare < Sinatra::Base
     haml :edit, locals: {doc: Doc.new}
   end
 
+  get "/doc/:id" do
+    id  = params[:id]
+    doc = current_user.docs.find_by_id(id)
+
+    if doc.nil?
+      register_errors("Could not find requested Document")
+      haml :index, locals: {docs: current_user.docs}
+    else
+      haml :show, locals: {doc: doc, preview: doc.render}
+    end
+  end
+
   get "/doc/:id/edit" do
     id  = params[:id]
     doc = current_user.docs.find_by_id(id)
@@ -78,6 +90,23 @@ class ChordProShare < Sinatra::Base
       register_errors("Could not find requested Document")
       haml :index, locals: {docs: current_user.docs}
     else
+      haml :edit, locals: {doc: doc}
+    end
+  end
+
+  post "/doc" do
+    id     = params[:id]
+    name   = params[:name]
+    markup = params[:markup]
+
+    doc = current_user.docs.find_by_id(id) || current_user.docs.new
+    doc.name   = name
+    doc.markup = markup
+
+    if doc.save
+      redirect to("/doc/#{doc.id}")
+    else
+      register_errors(doc.errors.full_messages) unless doc.save
       haml :edit, locals: {doc: doc}
     end
   end
@@ -96,20 +125,6 @@ class ChordProShare < Sinatra::Base
     pdf = ChordProPDF.new(@doc)
 
     send_file(pdf.path, filename: pdf.name, type: "application/pdf")
-  end
-
-  post "/save" do
-    id     = params[:id]
-    name   = params[:name]
-    markup = params[:markup]
-
-    doc = current_user.docs.find_by_id(id) || current_user.docs.new
-    doc.name   = name
-    doc.markup = markup
-
-    register_errors(doc.errors.full_messages) unless doc.save
-
-    haml :edit, locals: {doc: doc}
   end
 
   get "/login" do

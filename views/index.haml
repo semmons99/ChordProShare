@@ -1,8 +1,8 @@
-.right
+.float-right
   %a.btn(href="/doc/new") New Song
 
 %h1 Your Songs
 %ul
 - docs.each do |doc|
   %li
-    %a(href="/doc/#{doc.id}/edit")= doc.name
+    %a(href="/doc/#{doc.id}")= doc.name

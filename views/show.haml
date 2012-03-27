@@ -1,0 +1,23 @@
+#header.pull-right
+  %a.btn(href="/") Back to Index
+
+#preview.center
+  = preview
+
+#actions(style="margin-top: 1em;")
+  .btn-group
+    %a.btn(href="/doc/#{doc.id}/edit") Edit
+    %a.btn.dropdown-toggle(data-toggle="dropdown")
+      %span.caret
+    %ul.dropdown-menu
+      %li
+        %a.form-action(href="#" data-url="/download") Download ChordPro
+      %li
+        %a.form-action(href="#" data-url="/render") Download PDF
+
+%hr
+
+#footer.center
+  %p
+    ChordPro preview provided by
+    %a(href="http://webchord.sourceforge.net/") WebChord
