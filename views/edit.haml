@@ -1,5 +1,15 @@
 #header.pull-right
-  %a.btn(href="/" data-confirm="Are you sure? Unsaved changes will be lost.") Back to Index
+  .btn-toolbar
+    .btn-group
+      %button.btn.form-action(data-url="/doc") Save
+      %button.btn.dropdown-toggle(data-toggle="dropdown")
+        %span.caret
+      %ul.dropdown-menu
+        %li
+          %a.form-action(href="#" data-url="/download") Download ChordPro
+        %li
+          %a.form-action(href="#" data-url="/render") Download PDF
+    %a.btn(href="/" data-confirm="Are you sure? Unsaved changes will be lost.") Back to Index
 
 .tabbable
   %ul.nav.nav-pills
@@ -19,22 +29,6 @@
 
     #preview.tab-pane.center
       %img(src="/images/rendering.gif" alt="rendering")
-
-#actions
-  .btn-toolbar
-    .btn-group
-      %button.btn.form-action(data-url="/doc") Save
-      %button.btn.dropdown-toggle(data-toggle="dropdown")
-        %span.caret
-      %ul.dropdown-menu
-        %li
-          %a.form-action(href="#" data-url="/download") Download ChordPro
-        %li
-          %a.form-action(href="#" data-url="/render") Download PDF
-    - if doc.id.present?
-      %a.btn.btn-danger(href="/doc/#{doc.id}") Cancel
-    - else
-      %a.btn.btn-danger(href="/") Cancel
 
 %hr
 

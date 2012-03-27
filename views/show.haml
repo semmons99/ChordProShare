@@ -1,19 +1,22 @@
 #header.pull-right
-  %a.btn(href="/") Back to Index
+  .btn-toolbar
+    .btn-group
+      %a.btn(href="/doc/#{doc.id}/edit") Edit
+      %a.btn.dropdown-toggle(data-toggle="dropdown")
+        %span.caret
+      %ul.dropdown-menu
+        %li
+          %a.form-action(href="#" data-url="/download") Download ChordPro
+        %li
+          %a.form-action(href="#" data-url="/render") Download PDF
+    %a.btn(href="/") Back to Index
+
+%form#new-form(action="" method="post" style="display:none;")
+  %input#name(name="name" type="hidden" value="#{doc.name}")
+  %input#markup(name="markup" type="hidden" value="#{doc.markup}")
 
 #preview.center
   = preview
-
-#actions(style="margin-top: 1em;")
-  .btn-group
-    %a.btn(href="/doc/#{doc.id}/edit") Edit
-    %a.btn.dropdown-toggle(data-toggle="dropdown")
-      %span.caret
-    %ul.dropdown-menu
-      %li
-        %a.form-action(href="#" data-url="/download") Download ChordPro
-      %li
-        %a.form-action(href="#" data-url="/render") Download PDF
 
 %hr
 
