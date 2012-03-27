@@ -7,9 +7,10 @@
   %body
     - if authorized?
       .container
-        .right
-          = current_user.email
-          %a(href="/logout") Log out
+        .offset1.span10
+          .right
+            = current_user.email
+            %a(href="/logout") Log out
 
     .container
       .offset1.span10

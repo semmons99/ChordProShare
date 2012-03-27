@@ -2,6 +2,10 @@ body {
   background: url("/images/background.png");
 }
 
+h1 {
+  font-size: 1.5em;
+}
+
 .center {
   text-align: center;
 }
