@@ -67,10 +67,10 @@ class ChordProShare < Sinatra::Base
   end
 
   get "/doc/new" do
-    haml :doc, locals: {doc: Doc.new}
+    haml :edit, locals: {doc: Doc.new}
   end
 
-  get "/doc/:id" do
+  get "/doc/:id/edit" do
     id  = params[:id]
     doc = current_user.docs.find_by_id(id)
 
@@ -78,7 +78,7 @@ class ChordProShare < Sinatra::Base
       register_errors("Could not find requested Document")
       haml :index, locals: {docs: current_user.docs}
     else
-      haml :doc, locals: {doc: doc}
+      haml :edit, locals: {doc: doc}
     end
   end
 
@@ -109,7 +109,7 @@ class ChordProShare < Sinatra::Base
 
     register_errors(doc.errors.full_messages) unless doc.save
 
-    haml :doc, locals: {doc: doc}
+    haml :edit, locals: {doc: doc}
   end
 
   get "/login" do
